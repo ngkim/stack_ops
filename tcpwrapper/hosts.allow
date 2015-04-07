@@ -1,0 +1,44 @@
+# /etc/hosts.allow: list of hosts that are allowed to access the system.
+#                   See the manual pages hosts_access(5) and hosts_options(5).
+#
+# Example:    ALL: LOCAL @some_netgroup
+#             ALL: .foobar.edu EXCEPT terminalserver.foobar.edu
+#
+# If you're going to protect the portmapper use the name "rpcbind" for the
+# daemon name. See rpcbind(8) and rpc.mountd(8) for further information.
+#
+ALL: 10.0.0.0/255.255.255.0
+
+# KT - Daejeon
+ALL: 211.224.204.128/255.255.255.224
+ALL: 220.123.31.96/255.255.255.255
+
+# KT - KORNET (Daejeon - Main Building 4th floor)
+ALL: 222.96.0.0/255.240.0.0
+ALL: 222.112.0.0/255.248.0.0
+ALL: 222.120.0.0/255.254.0.0
+ALL: 222.122.0.0/255.255.0.0
+
+ALL: 110.70.51.0/255.255.255.0
+ALL: 110.68.0.0/255.252.0.0
+ALL: 110.72.0.0/255.248.0.0
+ALL: 110.80.0.0/255.240.0.0
+ALL: 110.96.0.0/255.224.0.0
+ALL: 110.128.0.0/255.128.0.0
+ALL: 192.128.0.0/255.224.0.0
+ALL: 192.160.0.0/255.248.0.0
+ALL: 192.168.0.0/255.255.255.0
+ALL: 192.168.1.0/255.255.255.254
+
+# KT - Seocho
+ALL: 221.151.188.0/255.255.255.0
+
+# KT - Umyeon
+ALL: 121.134.209.0/255.255.255.0
+
+# AROM Seoul
+ALL: 175.209.35.0/255.255.255.0
+ALL: 220.123.31.0/255.255.255.0
+ALL: 125.138.98.0/255.255.255.0
+
+ALL: 175.223.0.0/255.255.0.0

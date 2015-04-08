@@ -1,5 +1,30 @@
 #!/bin/bash
 
+###############################################
+# Compute Node Specific configuration
+PHY_IN="p2p1"
+PHY_OUT="p2p2"
+OVS_IN="br-lan"
+OVS_OUT="br-wan"
+
+# VM Specific configuration
+DEV_IN="fb308d2a-7a"
+DEV_OUT="7f08463f-0a"
+###############################################
+
+PATH[0]=${PHY_IN}
+PATH[1]="phy-${OVS_IN}"
+PATH[2]="int-${OVS_IN}"
+PATH[3]="qvo${DEV_IN}"
+PATH[4]="qvb${DEV_IN}"
+PATH[5]="tap${DEV_IN}"
+PATH[6]="tap${DEV_OUT}"
+PATH[7]="qvb${DEV_OUT}"
+PATH[8]="qvo${DEV_OUT}"
+PATH[9]="int-${OVS_OUT}"
+PATH[10]="phy-${OVS_OUT}"
+PATH[11]="${PHY_OUT}"
+
 get_pkt_counter() {
 	DEV=$1
 	MODE=$2
@@ -34,22 +59,6 @@ show_counter() {
                 printf "\t%s %-20s %-20s\n" "RX" $RX_PKT $RX_DROP
 	fi
 }
-
-DEV_IN="fb308d2a-7a"
-DEV_OUT="7f08463f-0a"
-
-PATH[0]="p2p1"
-PATH[1]="phy-br-lan"
-PATH[2]="int-br-lan"
-PATH[3]="qvo${DEV_IN}"
-PATH[4]="qvb${DEV_IN}"
-PATH[5]="tap${DEV_IN}"
-PATH[6]="tap${DEV_OUT}"
-PATH[7]="qvb${DEV_OUT}"
-PATH[8]="qvo${DEV_OUT}"
-PATH[9]="int-br-wan"
-PATH[10]="phy-br-wan"
-PATH[11]="p2p2"
 
 for (( i = 0 ; i < ${#PATH[@]} ; i++ )) do
         DEV=${PATH[$i]}

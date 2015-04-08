@@ -1,29 +1,19 @@
 #!/bin/bash
 
-###############################################
-# Compute Node Specific configuration
-PHY_IN="p2p1"
-PHY_OUT="p2p2"
-OVS_IN="br-lan"
-OVS_OUT="br-wan"
+if [ -z $1 ]; then
+  echo "Usage: $0 [config_file]"
+  echo "   ex: $0 vm.cfg"
+  exit
+fi
 
-# VM Specific configuration
-DEV_IN="fb308d2a-7a"
-DEV_OUT="7f08463f-0a"
-###############################################
+CONFIG=$1
 
-PATH[0]=${PHY_IN}
-PATH[1]="phy-${OVS_IN}"
-PATH[2]="int-${OVS_IN}"
-PATH[3]="qvo${DEV_IN}"
-PATH[4]="qvb${DEV_IN}"
-PATH[5]="tap${DEV_IN}"
-PATH[6]="tap${DEV_OUT}"
-PATH[7]="qvb${DEV_OUT}"
-PATH[8]="qvo${DEV_OUT}"
-PATH[9]="int-${OVS_OUT}"
-PATH[10]="phy-${OVS_OUT}"
-PATH[11]="${PHY_OUT}"
+if [ ! -f $CONFIG ]; then
+  echo "Error: $CONFIG does not exist!!!"
+  exit
+else
+  source "$CONFIG"
+fi
 
 get_pkt_counter() {
 	DEV=$1
@@ -45,22 +35,35 @@ get_drop_counter() {
         fi
 }
 
-show_counter() {
+get_tx_qlen() {
 	local DEV=$1
+        
+        if [ ! -z $DEV ]; then
+        	STR=`/sbin/ifconfig $DEV | /bin/grep "txqueuelen" | /usr/bin/awk '{print $2}'`
+		printf "%s" $STR
+        fi
+}
 
-        echo "DEV= $DEV"
+#### Colors
+blue=$(/usr/bin/tput setaf 4)
+green=$(/usr/bin/tput setaf 2)
+normal=$(/usr/bin/tput sgr0)
+
+show_counter() {
+	local SEQ=$1
+	local DEV=$2
+
 	if [ ! -z $DEV ]; then
 		TX_PKT=`get_pkt_counter $DEV "TX"`
 		TX_DROP=`get_drop_counter $DEV "TX"`
+		TX_QLEN=`get_tx_qlen $DEV`
 		RX_PKT=`get_pkt_counter $DEV "RX"`
 		RX_DROP=`get_drop_counter $DEV "RX"`
-
-                printf "\t%s %-20s %-20s\n" "TX" $TX_PKT $TX_DROP
-                printf "\t%s %-20s %-20s\n" "RX" $RX_PKT $RX_DROP
+                printf "%3d %-20s\t%s %-20s %-20s %-20s %s %-20s %-20s\n" $SEQ $DEV ${blue}TX${normal} $TX_PKT $TX_DROP $TX_QLEN ${green}RX${normal} $RX_PKT $RX_DROP
 	fi
 }
 
 for (( i = 0 ; i < ${#PATH[@]} ; i++ )) do
         DEV=${PATH[$i]}
-	show_counter $DEV
+	show_counter $i $DEV
 done

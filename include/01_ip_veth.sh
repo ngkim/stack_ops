@@ -20,4 +20,11 @@ delete_veth() {
   run_commands $cmd
 }
 
+set_veth_ns() {
+  local DEV=$1
+  local NS_NAME=$2
+
+  ip link set $DEV netns $NS_NAME
+}
+
 

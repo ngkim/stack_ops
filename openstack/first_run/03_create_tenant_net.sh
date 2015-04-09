@@ -7,8 +7,8 @@ if [ -z ${OS_AUTH_URL+x} ]; then
     source ~/openstack_rc
 fi
 
-echo 'neutron net-create $TENANT_NET'
-neutron net-create $TENANT_NET
+echo 'neutron net-create $TENANT_NET --shared'
+neutron net-create $TENANT_NET --shared
 
 echo "neutron subnet-create $TENANT_NET --name $TENANT_SBNET \
   --gateway $TENANT_NETWORK_GW \

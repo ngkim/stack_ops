@@ -9,6 +9,7 @@ if [ -z $1 ]; then
 fi
 
 TEST_ID=$1
+_OPTS=${@:2:$#}
 
 CONFIG="config/00_test.cfg"
 if [ ! -f $CONFIG ]; then

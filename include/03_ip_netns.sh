@@ -64,8 +64,9 @@ show_route_netns() {
 ping_netns() {
   local NS_NAME=$1
   local DST_IP=$2
+  local OPTS=${@:3:$#}
 
-  cmd="ip netns exec $NS_NAME ping $DST_IP"
+  cmd="ip netns exec $NS_NAME ping $DST_IP $OPTS"
   run_commands $cmd
 }
 
@@ -73,8 +74,11 @@ iperf_tcp_server_netns() {
   local NS_NAME=$1
   local IPERF_LOG=$2
 
-#  cmd="ip netns exec $NS_NAME iperf -s -i 1 &> $IPERF_LOG &"
-  cmd="ip netns exec $NS_NAME iperf -s -i 1"
+  if [ -z $IPERF_LOG ]; then
+    cmd="ip netns exec $NS_NAME iperf -s -i 1"
+  else
+    cmd="ip netns exec $NS_NAME iperf -s -i 1 &> $IPERF_LOG &"
+  fi
   run_commands $cmd
 }
 
@@ -86,7 +90,6 @@ iperf_tcp_client_netns() {
   cmd="ip netns exec $NS_NAME iperf -c $DST_IP -i 1 $OPTS"
   run_commands $cmd
 }
-
 
 tcpdump_netns() {
   local NS_NAME=$1

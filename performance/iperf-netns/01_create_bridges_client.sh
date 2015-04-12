@@ -9,4 +9,3 @@ create_vlan_interface $ITF_LAN $VLAN_ORG
 
 setup_bridge $BR_GRN BR_GRN_ITF[@]
 setup_bridge $BR_ORG BR_ORG_ITF[@]
-setup_bridge $BR_RED BR_RED_ITF[@]

@@ -42,3 +42,10 @@
         | subnet              | 10    |
         +---------------------+-------+
 
+* VM 생성 Process
+  1) network 생성
+     # ./05_create_provider_net.sh 1
+  2) VM 생성
+     # ./06_nova_boot_multinic.sh 1
+
+

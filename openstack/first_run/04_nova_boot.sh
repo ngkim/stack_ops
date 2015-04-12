@@ -1,7 +1,7 @@
 #!/bin/bash
 
 source 'tenant-net.ini'
-source '../include/command_util.sh'
+source '../../include/command_util.sh'
 
 if [ -z ${OS_AUTH_URL+x} ]; then
     source ~/openstack_rc

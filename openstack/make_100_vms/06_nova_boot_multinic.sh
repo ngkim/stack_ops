@@ -1,26 +1,7 @@
 #!/bin/bash
 
-source '../include/command_util.sh'
-
-if [ -z $1 ]; then
-  echo "Usage: $0 [config_file]"
-  echo "   ex: $0 provider-net.ini"
-  exit
-fi
-
-CONFIG=$1
-
-if [ ! -f $CONFIG ]; then
-  echo "Error: $CONFIG does not exist!!!"
-  exit
-else
-  source "$CONFIG"
-fi
-
-# TODO: Tenant ID 옵션 지원
-if [ -z ${OS_AUTH_URL+x} ]; then
-    source ~/openstack_rc
-fi
+source "00_check_input.sh"
+source "$WORK_HOME/include/provider_net_util.sh"
 
 echo "glance image-list | awk '/'$VM_IMAGE'/{print $2}'"
 IMAGE_ID=`glance image-list | awk '/'$VM_IMAGE'/{print $2}'`

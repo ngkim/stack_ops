@@ -93,9 +93,9 @@ get_counter() {
 		CUR_RX_BYTES=`get_byte_counter $DEV "rx"`
 
 #                printf "%s %20s %5s %-100s\n" "echo" $CUR_TX_PKT ">>" $LOG_TX_PKT
-                echo $CUR_TX_PKT   >> $LOG_TX_PKT
+#                echo $CUR_TX_PKT   >> $LOG_TX_PKT
                 echo $CUR_TX_BYTES >> $LOG_TX_BYTES
-                echo $CUR_RX_PKT   >> $LOG_RX_PKT
+#                echo $CUR_RX_PKT   >> $LOG_RX_PKT
                 echo $CUR_RX_BYTES >> $LOG_RX_BYTES
 
 	        ARR_TX_PKT[$SEQ]=$CUR_TX_PKT
@@ -130,14 +130,29 @@ show_counter() {
                 RX_PKT=$(( $CUR_RX_PKT - $PREV_RX_PKT ))
                 TX_DROP=$CUR_TX_DROP
                 RX_DROP=$CUR_RX_DROP
-                TX_BYTES=$(( ($CUR_TX_BYTES - $PREV_TX_BYTES) * 8 / 1000 ))
-                RX_BYTES=$(( ($CUR_RX_BYTES - $PREV_RX_BYTES) * 8 / 1000 ))
+                TX_BYTES=`echo "scale=2; ($CUR_TX_BYTES - $PREV_TX_BYTES) * 8 / (1000 * 1000 * 1000)" | bc`
+                RX_BYTES=`echo "scale=2; ($CUR_RX_BYTES - $PREV_RX_BYTES) * 8 / (1000 * 1000 * 1000)" | bc`
                 SUM_PKTS=$(( $TX_PKT + $RX_PKT ))
-                SUM_BPS=$(( $TX_BYTES + $RX_BYTES ))
+                SUM_BPS=`echo "scale=2; $TX_BYTES + $RX_BYTES" | bc`
 
-                printf "%5s %-15s\t%s %10s %10s %10s %s %10s %10s %10s %12s %12s\n" $SEQ $DEV ${blue}TX${normal} $TX_PKT $TX_BYTES $TX_DROP ${green}RX${normal} $RX_PKT $RX_BYTES $RX_DROP $SUM_PKTS $SUM_BPS
+                if [ $(echo "${ARR_MAX_BPS[$SEQ]}==-1" | bc -l) -eq "1" ]; then 
+                  ARR_MAX_BPS[$SEQ]=0
+                elif [ $(echo "${ARR_MAX_BPS[$SEQ]}<$SUM_BPS" | bc -l) -eq "1" ]; then 
+                  ARR_MAX_BPS[$SEQ]=$SUM_BPS
+                fi
+
+                if [ "${ARR_MAX_PPS[$SEQ]}" -eq "-1" ]; then 
+                  ARR_MAX_PPS[$SEQ]=0
+                elif [ "${ARR_MAX_PPS[$SEQ]}" -lt "$SUM_PKTS" ]; then 
+                  ARR_MAX_PPS[$SEQ]=$SUM_PKTS
+                fi
+
+                printf "%5s %-15s\t%s %10s %10s %10s %s %10s %10s %10s %12s %12s %12s %12.2f\n" $SEQ $DEV ${blue}TX${normal} $TX_PKT $TX_BYTES $TX_DROP ${green}RX${normal} $RX_PKT $RX_BYTES $RX_DROP $SUM_PKTS $SUM_BPS ${ARR_MAX_PPS[$SEQ]} ${ARR_MAX_BPS[$SEQ]}
 	fi
 }
+
+declare -a ARR_MAX_BPS
+declare -a ARR_MAX_PPS
 
 declare -a ARR_TX_PKT
 declare -a ARR_TX_DROP
@@ -156,6 +171,7 @@ declare -a PREV_ARR_RX_BYTES
 
 # create empty arrays to record stat
 for (( i = 0 ; i < ${#ITF[@]} ; i++ )) do
+        ARR_MAX_BPS[$i]=-1; ARR_MAX_PPS[$i]=-1
         ARR_TX_PKT[$i]=0;   ARR_RX_PKT[$i]=0
         ARR_TX_DROP[$i]=0;  ARR_RX_DROP[$i]=0
         ARR_TX_BYTES[$i]=0; ARR_RX_BYTES[$i]=0
@@ -173,7 +189,7 @@ main_loop() {
 	get_counter $i $DEV
     done
 
-    printf "%5s %-15s\t%s %10s %10s %10s %s %10s %10s %10s %12s %12s\n" "SEQ" "NIC" ${blue}TX${normal} "TX:pkt/s" "TX:Kbps" "TX_DROP" ${green}RX${normal} "RX:pkt/s" "RX:Kbps" "RX_DROP" "T_PPS" "T_BPS"
+    printf "%5s %-15s\t%s %10s %10s %10s %s %10s %10s %10s %12s %12s %12s %12s\n" "SEQ" "NIC" ${blue}TX${normal} "TX:pkt/s" "TX:Kbps" "TX_DROP" ${green}RX${normal} "RX:pkt/s" "RX:Kbps" "RX_DROP" "T_PPS" "T_BPS" "MAX_PPS" "MAX_BPS"
     printf "%s\n" "-------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
 
     for (( i = 0 ; i < ${#ITF[@]} ; i++ )) do

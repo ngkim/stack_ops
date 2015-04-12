@@ -1,22 +1,7 @@
 #!/bin/bash
 
-source "../include/command_util.sh"
-source "../include/provider_net_util.sh"
-
-if [ -z $1 ]; then
-  echo "Usage: $0 [config_file]"
-  echo "   ex: $0 provider-net.ini"
-  exit
-fi
-
-CONFIG=$1
-
-if [ ! -f $CONFIG ]; then
-  echo "Error: $CONFIG does not exist!!!"
-  exit
-else
-  source "$CONFIG"
-fi
+source "00_check_input.sh"
+source "$WORK_HOME/include/provider_net_util.sh"
 
 echo "======== PROVIDER NET: GREEN ========"
 delete_provider_subnet 	$SBNET_GRN

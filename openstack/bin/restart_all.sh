@@ -23,10 +23,10 @@ done
 
 for process in $(ls /etc/init/neutron* | cut -d'/' -f4 | cut -d'.' -f1)
 do
-   if [ "$process" != "neutron-ovs-cleanup" ]; then
+#   if [ "$process" != "neutron-ovs-cleanup" ]; then
 	sudo stop ${process}
 	sudo start ${process}
-   fi
+#   fi
 done
 
 for process in $(ls /etc/init/cinder* | cut -d'/' -f4 | cut -d'.' -f1)

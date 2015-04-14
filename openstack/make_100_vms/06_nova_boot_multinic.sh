@@ -3,14 +3,25 @@
 source "00_check_input.sh"
 source "$WORK_HOME/include/provider_net_util.sh"
 
-echo "glance image-list | awk '/'$VM_IMAGE'/{print $2}'"
-IMAGE_ID=`glance image-list | awk '/'$VM_IMAGE'/{print $2}'`
-echo "neutron net-list | awk '/'$NET_MGMT'/{print $2}'"
-NET_MGMT_ID=`neutron net-list | awk '/'$NET_MGMT'/{print $2}'`
-NET_MGMT_ID=`neutron net-list | awk '/'$NET_MGMT'/{print $2}'`
-NET_RED_ID=`neutron net-list | awk '/'$NET_RED'/{print $2}'`
-NET_GRN_ID=`neutron net-list | awk '/'$NET_GRN'/{print $2}'`
-NET_ORG_ID=`neutron net-list | awk '/'$NET_ORG'/{print $2}'`
+cmd="glance image-list | awk '/'$VM_IMAGE'/{print \$2}'"
+run_commands $cmd
+IMAGE_ID=$RET
+
+cmd="neutron net-list | awk '/'$NET_MGMT'/{print \$2}'"
+run_commands $cmd
+NET_MGMT_ID=$RET
+
+cmd="neutron net-list | awk '/'$NET_RED'/{print \$2}'"
+run_commands $cmd
+NET_RED_ID=$RET
+
+cmd="neutron net-list | grep '$NET_GRN ' | awk '/'$NET_GRN'/{print \$2}'"
+run_commands $cmd
+NET_GRN_ID=$RET
+
+cmd="neutron net-list | grep '$NET_ORG ' | awk '/'$NET_ORG'/{print \$2}'"
+run_commands $cmd
+NET_ORG_ID=$RET
 
 source "bootstrap/provider_bootstrap_template.sh" \
 	"dat/provider-$VM_NAME.dat" \

@@ -7,8 +7,7 @@ function run_commands() {
     commands=$*
 
     echo -e ${green}${commands}${normal}
-    eval $commands    
-    echo 
+    RET=`eval $commands`
 }
 
 function call_restapi_json() {

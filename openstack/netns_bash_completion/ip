@@ -1,0 +1,21 @@
+_ip()
+{
+  local cur prev opts
+  COMPREPLY=()
+  cur="${COMP_WORDS[COMP_CWORD]}"
+  prev="${COMP_WORDS[COMP_CWORD-1]}"
+  opts="exec"
+
+  case "${prev}" in
+    exec)
+      ns_list=$(ip netns)
+      COMPREPLY=( $(compgen -W "${ns_list}" -- ${cur}) )
+      return 0
+      ;;
+    *)
+    ;;
+  esac 
+
+  return 0
+}
+complete -F _ip ip

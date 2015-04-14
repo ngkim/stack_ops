@@ -10,6 +10,8 @@ get_max() {
     MAX=0
   elif [ $(echo "$R_VAL<$L_VAL" | bc -l) -eq "1" ]; then 
     MAX=$L_VAL
+  else
+    MAX=$R_VAL
   fi
  
   eval "$RET=$MAX" 

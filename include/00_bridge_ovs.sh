@@ -76,3 +76,15 @@ destroy_bridge() {
   list_bridges
 }
 
+clear_bridge() {
+  local BR_NAME=$1
+  
+  list_interfaces $BR_NAME
+  for port in $RET; do
+    delete_interface $BR_NAME $port
+  done
+
+  delete_bridge $BR_NAME
+}
+
+

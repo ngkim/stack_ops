@@ -4,7 +4,7 @@ source "00_check_input.sh"
 source "$WORK_HOME/include/03_ip_netns.sh"
 source "$WORK_HOME/include/05_process.sh"
 
-DUR=60
+DUR=120
 
 DIR_LOG="/tmp/iperf/client"
 mkdir -p $DIR_LOG

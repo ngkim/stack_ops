@@ -19,7 +19,7 @@ else
 fi
 
 # TODO: Tenant ID 옵션 지원
-if [ -z ${OS_AUTH_URL+x} ]; then
+if [ -z ${OS_AUTH_URL} ]; then
     source ~/openstack_rc
 fi
 

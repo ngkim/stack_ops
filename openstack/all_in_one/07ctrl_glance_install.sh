@@ -179,3 +179,8 @@ ctrl_glance_demo_image_create() {
     glance image-list
     echo '# --------------------------------------------------------------------'   
 }
+
+CIRROS_IMAGE="cirros-0.3.0-x86_64-disk.img"
+UBUNTU_IMAGE="trusty-server-cloudimg-amd64-disk1.img"
+
+ctrl_glance_demo_image_create

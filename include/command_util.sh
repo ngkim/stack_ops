@@ -10,6 +10,13 @@ function run_commands() {
     RET=`eval $commands`
 }
 
+function run_commands_no_ret() {
+    commands=$*
+
+    echo -e ${green}${commands}${normal}
+    eval $commands
+}
+
 function call_restapi_json() {
     commands=$*
 

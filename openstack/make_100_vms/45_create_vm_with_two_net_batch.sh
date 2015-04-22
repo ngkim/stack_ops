@@ -36,5 +36,5 @@ check_ping() {
   echo "TOTAL= $CNT_TOTAL OK= $CNT_OK ERROR= $CNT_ERR"  
 }
 
-create_vm
+#create_vm
 check_ping

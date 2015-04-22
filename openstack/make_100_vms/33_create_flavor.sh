@@ -11,9 +11,16 @@ flavor-create() {
   nova flavor-create --is-public true $NAME $ID $RAM $DISK $CPU --rxtx-factor $RXTX
 }
 
-flavor-create 6 \
-              m1.utm \
-              4 \
+#flavor-create 6 \
+#              m1.utm \
+#              4 \
+#              4096 \
+#              20 \
+#              1.0 
+
+flavor-create 7 \
+              m1.utm.large \
+              6 \
               4096 \
               20 \
               1.0 

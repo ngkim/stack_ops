@@ -11,6 +11,19 @@ cmd="neutron net-list | awk '/'$NET_MGMT'/{print \$2}'"
 run_commands $cmd
 NET_MGMT_ID=$RET
 
+cmd="neutron subnet-list | awk '/$SBNET_MGMT/{print \$2}'"
+run_commands $cmd
+SBNET_MGMT_ID=$RET
+
+cmd="neutron port-list | grep $SBNET_MGMT_ID | grep $IP_MGMT | awk '{print \$2}'"
+run_commands $cmd
+MGMT_PORT_ID=$RET
+if [ -z $MGMT_PORT_ID ]; then
+  cmd="neutron port-create $NET_MGMT_ID --fixed-ip subnet_id=$SBNET_MGMT_ID,ip_address=$IP_MGMT | awk '/ id/{print \$4}'"
+  run_commands $cmd
+  MGMT_PORT_ID=$RET
+fi
+
 cmd="neutron net-list | awk '/'$NET_RED'/{print \$2}'"
 run_commands $cmd
 NET_RED_ID=$RET
@@ -40,7 +53,7 @@ do_nova_boot() {
         --flavor $VM_FLAVOR_UTM \
         --image $IMAGE_ID \
         --key-name $ACCESS_KEY \
-	--nic net-id=$NET_MGMT_ID \
+        --nic port-id=$MGMT_PORT_ID \
         --nic net-id=$NET_RED_ID \
 	--nic net-id=$NET_GRN_ID \
 	--nic net-id=$NET_ORG_ID \

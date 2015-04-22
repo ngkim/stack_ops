@@ -206,31 +206,39 @@ for (( i = 0 ; i < ${#ITF[@]} ; i++ )) do
 
 done
 
+print_line() {
+  local STR=""
+  for i in `seq 1 160`; do
+    STR="$STR-"
+  done
+  printf "%s\n" $STR
+}
+
 main_loop() {
+
+  print_line
   while true; do
     for (( i = 0 ; i < ${#ITF[@]} ; i++ )) do
         DEV=${ITF[$i]}
 	get_counter $i $DEV
     done
 
-    printf "%5s %-15s\t%s %10s %10s %10s %s %10s %10s %10s %12s %12s %12s %12s\n" "SEQ" "NIC" ${blue}TX${normal} "TX:pkt/s" "TX:Kbps" "TX_DROP" ${green}RX${normal} "RX:pkt/s" "RX:Kbps" "RX_DROP" "T_PPS" "T_BPS" "MAX_PPS" "MAX_BPS"
-    printf "%s\n" "-------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
-
+    printf "%5s %-15s\t%5s %10s %10s %10s %5s %10s %10s %10s %12s %12s %12s %12s\n" "SEQ" "NIC" ${blue}TX${normal} "TX:pkt/s" "TX:Kbps" "TX_DROP" ${green}RX${normal} "RX:pkt/s" "RX:Kbps" "RX_DROP" "T_PPS" "T_BPS" "MAX_PPS" "MAX_BPS"
     for (( i = 0 ; i < ${#ITF[@]} ; i++ )) do
         DEV=${ITF[$i]}
 	show_counter $i $DEV
     done
 
-    echo ""
-    printf "%15s %15s\n" "LOAD_AVG"  "MAX_LOAD_AVG"
-    printf "%s\n" "---------------------------------"
     _CUR_LOAD=`get_load_avg`
     get_max $_CUR_LOAD $MAX_LOAD_AVG MAX_LOAD_AVG
-    printf "%15s %15s\n" $_CUR_LOAD $MAX_LOAD_AVG
+    print_line
+    printf "%5s %-15s\t%2s %10s %10s %10s %2s %10s %10s %10s %12s %12s %12s %12s\n" "" "" "" "" "" "" "" "" "" "" "" "" "LOAD" "MAX_LOAD"
+    printf "%5s %-15s\t%2s %10s %10s %10s %2s %10s %10s %10s %12s %12s %12s %12.2f\n" "" "" "" "" "" "" "" "" "" "" "" "" "$_CUR_LOAD" "$MAX_LOAD_AVG"
+    print_line
 
     sleep 1
 #    echo ""
-    clear
+#    clear
   done
 }
 

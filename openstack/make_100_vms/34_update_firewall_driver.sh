@@ -34,6 +34,14 @@ update_neutron_quotas() {
   run_commands $cmd
 }
 
+update_neutron_ml2_fw_driver() {
+  param=$1
+  value=$2
+
+  cmd="crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini securitygroup $param $value"
+  run_commands $cmd
+}
+
 restart_service() {
   svc=$1
 
@@ -43,29 +51,12 @@ restart_service() {
 
 check_cmd crudini
 
-update_nova_allocation_ratio cpu_allocation_ratio 20.0
-update_nova_allocation_ratio ram_allocation_ratio 2.5
-update_nova_allocation_ratio disk_allocation_ratio 1.5
-
-TENANT=admin
-PROJECT_ID=`keystone tenant-list | awk '/'$TENANT'/{print $2}'`
-
-echo "TENANT= $TENANT PROJEC_ID=$PROJECT_ID"
-update_nova_quotas $PROJECT_ID instances 200
-update_nova_quotas $PROJECT_ID cores 600
-update_nova_quotas $PROJECT_ID ram 500000 
+#update_neutron_ml2_fw_driver firewall_driver neutron.agent.linux.iptables_firewall.OVSHybridIptablesFirewallDriver
+update_neutron_ml2_fw_driver firewall_driver neutron.agent.firewall.NoopFirewallDriver
 
 restart_service nova-api
 restart_service nova-compute
 restart_service nova-scheduler
 
-update_neutron_quotas quota_network 400
-update_neutron_quotas quota_subnet 400
-update_neutron_quotas quota_port 500
-update_neutron_quotas quota_router 10
-update_neutron_quotas quota_floatingip 100
-update_neutron_quotas quota_security_group 1000
-update_neutron_quotas quota_security_group_rule 5000
-
-restart_service neutron-server
 restart_service neutron-plugin-openvswitch-agent
+restart_service neutron-server

@@ -1,15 +1,13 @@
 #!/bin/bash
 
-if [ -z $2 ]; then
-  echo "Usage: $0 [START] [END]"
-  echo "   ex) $0 3 5"
-  exit
-fi
+source "00_check_input_batch.sh"
 
-START=$1
-END=$2
+create_vm() {
+  for TEST_ID in `seq $START $END`; do
+    ./05_create_provider_net.sh $TEST_ID
+    ./06_nova_boot_multinic.sh $TEST_ID
+    sleep 1
+  done
+}
 
-for TEST_ID in `seq $START $END`; do
-  ./05_create_provider_net.sh $TEST_ID
-  ./06_nova_boot_multinic.sh $TEST_ID
-done
+create_vm

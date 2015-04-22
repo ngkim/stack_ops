@@ -14,6 +14,6 @@ END=$2
 run_batch() {
   cmd=$*
   for TEST_ID in `seq $START $END`; do
-    run_commands_no_ret $cmd $TEST_ID
+    run_commands $cmd $TEST_ID
   done
 }

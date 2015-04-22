@@ -67,7 +67,7 @@ ping_netns() {
   local OPTS=${@:3:$#}
 
   cmd="ip netns exec $NS_NAME ping $DST_IP $OPTS"
-  run_commands $cmd
+  run_commands_no_ret $cmd
 }
 
 iperf_tcp_server_netns() {

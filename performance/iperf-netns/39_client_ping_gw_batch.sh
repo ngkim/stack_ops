@@ -7,8 +7,8 @@ check_ping() {
   CNT_OK=0
   CNT_TOTAL=0
   for TEST_ID in `seq $START $END`; do
-    cmd="./36_client_ping_red.sh"
-    run_commands $cmd $TEST_ID
+    cmd="./31_client_ping_gw.sh"
+    run_commands_no_ret $cmd $TEST_ID
     if [ "$?" = 0 ]; then
       echo -e TEST_ID= ${TEST_ID} OK!!!
       CNT_OK=$((CNT_OK + 1))

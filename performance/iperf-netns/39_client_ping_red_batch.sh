@@ -22,8 +22,6 @@ check_ping() {
   echo "TOTAL= $CNT_TOTAL OK= $CNT_OK ERROR= $CNT_ERR"  
 }
 
-for iter in `seq 1 2`; do
-  check_ping
-done
+check_ping
 
 

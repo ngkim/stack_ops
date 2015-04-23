@@ -9,3 +9,5 @@ PID_FILE="/tmp/iperf-server-${TEST_ID}.pid"
 for PID in `cat $PID_FILE`; do
   kill_process_tree $PID
 done
+
+rm $PID_FILE

@@ -13,6 +13,7 @@ kill_process_tree() {
   done
 
   kill_process $PID
+  
 }
 
 # record PID to an array
@@ -21,6 +22,7 @@ record_pid() {
   local SEQ=$2
   local PID=$3
 
+  echo "$SEC PID= $PID"
   eval "${arr_name}[$SEQ]=$PID"
 }
 

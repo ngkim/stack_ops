@@ -3,6 +3,18 @@ green=$(tput setaf 2)
 red=$(tput setaf 1)
 normal=$(tput sgr0)
 
+print_msg() {
+  msg=$*
+
+  echo -e ${blue}$msg${normal}
+}
+
+print_msg_high() {
+  msg=$*
+
+  echo -e ${red}$msg${normal}
+}
+
 function run_commands() {
     commands=$*
 

@@ -38,8 +38,8 @@ echo "
 # ---------------------------------------------------
 "
 
-echo "ip route add 169.254.169.254/32 via 172.16.0.1"
-ip route add 169.254.169.254/32 via 172.16.0.1
+#echo "ip route add 169.254.169.254/32 via 172.16.0.1"
+#ip route add 169.254.169.254/32 via 172.16.0.1
 
 apt-get -y update  
 apt-get -y install iperf ifstat sysstat bridge-utils

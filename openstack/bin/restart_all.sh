@@ -6,7 +6,8 @@ service rabbitmq-server restart
 restart mysql
 
 # openstack component
-service keystone restart
+# if keyston is provided by apache, no need to start keystone 
+#service keystone restart
 service glance-api restart
 service glance-registry restart
 
@@ -23,10 +24,10 @@ done
 
 for process in $(ls /etc/init/neutron* | cut -d'/' -f4 | cut -d'.' -f1)
 do
-#   if [ "$process" != "neutron-ovs-cleanup" ]; then
+   if [ "$process" != "neutron-ovs-cleanup" ]; then
 	sudo stop ${process}
 	sudo start ${process}
-#   fi
+   fi
 done
 
 for process in $(ls /etc/init/cinder* | cut -d'/' -f4 | cut -d'.' -f1)

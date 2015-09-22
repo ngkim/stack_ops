@@ -3,9 +3,10 @@
 VM_LIST=`virsh list | awk '$1 ~ /^[0-9]+$/{print $2}'`
 
 NOVA_USER="nova"
-NOVA_PASS="nova"
+NOVA_PASS="nova1234"
 NOVA_DB="nova"
-DB_HOST="127.0.0.1"
+#DB_HOST="127.0.0.1"
+DB_HOST="10.0.0.11"
 
 # prerequisite: jq
 jq 2> /dev/null

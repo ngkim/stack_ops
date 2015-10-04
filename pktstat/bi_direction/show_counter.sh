@@ -11,12 +11,13 @@ if [ -z $1 ]; then
 fi
 
 CONFIG=$1
+CFG_DIR=../config
 
-if [ ! -f $CONFIG ]; then
-  echo "Error: $CONFIG does not exist!!!"
+if [ ! -f $CFG_DIR/$CONFIG ]; then
+  echo "Error: $CFG_DIR/$CONFIG does not exist!!!"
   exit
 else
-  source "$CONFIG"
+  source "$CFG_DIR/CONFIG"
 fi
 
 get_max() {

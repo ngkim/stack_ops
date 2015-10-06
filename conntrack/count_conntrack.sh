@@ -27,7 +27,9 @@ BEGIN {
   tcp_conn_count = tcp_conn_count + 1;
 }
 END { 
-  printf("TOTAL_TCP_CONN= %10s ESTABLISHED= %10s SYN_SENT= %10s TIME_WAIT= %10d CLOSE= %10s ETC= %10s\n", tcp_conn_count, tcp_conn_estab_count, tcp_conn_syn_sent_count, tcp_conn_time_wait_count, tcp_conn_close_count, tcp_conn_etc_count); 
+  now=systime(); 
+  str_now=strftime("%Y-%m-%d %H:%M:%S", now);
+  printf("%-20s TOTAL_TCP_CONN= %10s ESTABLISHED= %10s SYN_SENT= %10s TIME_WAIT= %10d CLOSE= %10s ETC= %10s\n", str_now, tcp_conn_count, tcp_conn_estab_count, tcp_conn_syn_sent_count, tcp_conn_time_wait_count, tcp_conn_close_count, tcp_conn_etc_count); 
 }'
 #' | sort -k 2
 #' | sort -k 2

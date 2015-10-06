@@ -13,6 +13,7 @@ usage() {
 }
 
 MAX_LOAD="0.0"
+STR_NOW=`date '+%Y-%m-%d %H:%M:%S'`
 while [ 1 ]; do
   LOAD_AVG=`cat /proc/loadavg`
   CUR_LOAD=`echo $LOAD_AVG | awk '{print $1}'`
@@ -20,6 +21,6 @@ while [ 1 ]; do
   if [ $CMP -eq 1 ]; then
     MAX_LOAD=$CUR_LOAD
   fi
-  printf "load= %10.2f max_load= %10.2f\n" $CUR_LOAD $MAX_LOAD
+  printf "%-10s %-10s load= %10.2f max_load= %10.2f\n" $STR_NOW $CUR_LOAD $MAX_LOAD
   sleep 1
 done

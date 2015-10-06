@@ -25,10 +25,10 @@ ifstat -b -i $DEV -n | awk '
 }
 {
   if ($1 ~ /^[0-9]/) {
+    now=systime(); 
+    str_now=strftime("%Y-%m-%d %H:%M:%S", now);
     if (max_rx < $1 ) { max_rx = $1 }
     if (max_tx < $2 ) { max_tx = $2 }
-    printf("rx= %10.2f tx= %10.2f max_rx= %10.2f max_tx= %10.2f\n", $1, $2, max_rx, max_tx);
-  } else {
-    print $0
-  }
+    printf("%-20s rx= %10.2f tx= %10.2f max_rx= %10.2f max_tx= %10.2f\n", str_now, $1, $2, max_rx, max_tx);
+  } 
 }'

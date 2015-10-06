@@ -13,8 +13,8 @@ usage() {
 }
 
 MAX_LOAD="0.0"
-STR_NOW=`date '+%Y-%m-%d %H:%M:%S'`
 while [ 1 ]; do
+  STR_NOW=`date '+%Y-%m-%d %H:%M:%S'`
   LOAD_AVG=`cat /proc/loadavg`
   CUR_LOAD=`echo $LOAD_AVG | awk '{print $1}'`
   CMP=`echo $CUR_LOAD '>' $MAX_LOAD | bc -l`

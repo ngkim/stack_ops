@@ -18,7 +18,7 @@ fi
 
 DEV=$1
 
-ifstat -b -i $DEV | awk '
+ifstat -b -i $DEV -n | awk '
 /BEGIN/ {
   max_rx=0.0
   max_tx=0.0

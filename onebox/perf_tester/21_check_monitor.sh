@@ -19,25 +19,25 @@ CONFIG=$1
 source $CONFIG
 #----------------------------------------------------------------------------------------------
 
-mon-host() {
+check-mon-host() {
   cd 01-mon-host
   for node in "${NODE_LIST[@]}"; do
     node_name=`echo $node | awk '{print $1}'`
     node_intf=`echo $node | awk '{print $2}'`
   
-    print_msg "${node_name}: start_monitor $node_intf" 
-    ./01_start_monitor.sh ${node_name} ${node_intf}
+    print_msg "${node_name}: check monitor..." 
+    ./02_check_monitor.sh ${node_name}
   done
   cd - &> /dev/null
 }
 
-mon-utm() {
+check-mon-utm() {
   cd 02-mon-utm
-  print_msg "${UTM}: start_monitor..." 
-  ./01_start_monitor_vUTM.sh $UTM
+  print_msg "${UTM}: check monitor..." 
+  ./02_check_monitor_vUTM.sh $UTM
   cd - &> /dev/null
 }
 
-mon-host
-mon-utm
+check-mon-host
+check-mon-utm
 

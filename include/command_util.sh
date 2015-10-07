@@ -12,7 +12,9 @@ print_msg() {
 print_msg_high() {
   msg=$*
 
+  echo -e "${red}------------------------------------------------------${normal}"
   echo -e ${red}$msg${normal}
+  echo -e "${red}------------------------------------------------------${normal}"
 }
 
 function run_commands() {

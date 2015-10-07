@@ -34,4 +34,4 @@ exec_check() {
 exec_check "ifstat-max" 
 exec_check "ifstat" 
 exec_check "loadavg-max" 
-exec_check "count_conntrack" 
+exec_check "count-conntrack" 

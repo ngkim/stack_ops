@@ -19,25 +19,16 @@ CONFIG=$1
 source $CONFIG
 #----------------------------------------------------------------------------------------------
 
-mon-host() {
-  cd 01-mon-host
-  for node in "${NODE_LIST[@]}"; do
-    node_name=`echo $node | awk '{print $1}'`
-    node_intf=`echo $node | awk '{print $2}'`
+CONFIG_REAL_PATH=`readlink -e ${CONFIG}`
+stop-iperf() {
+  cd 03-iperf
   
-    print_msg "${node_name}: start_monitor $node_intf" 
-    ./01_start_monitor.sh ${node_name} ${node_intf}
-  done
+  print_msg "stop iperf server and client" 
+  ./06_stop_iperf.sh $CONFIG_REAL_PATH
+
   cd - &> /dev/null
 }
 
-mon-utm() {
-  cd 02-mon-utm
-  print_msg "${UTM}: start_monitor..." 
-  ./01_start_monitor_vUTM.sh $UTM
-  cd - &> /dev/null
-}
-
-mon-host
-mon-utm
+stop-iperf
+sleep 3
 

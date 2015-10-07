@@ -19,25 +19,16 @@ CONFIG=$1
 source $CONFIG
 #----------------------------------------------------------------------------------------------
 
-mon-host() {
-  cd 01-mon-host
-  for node in "${NODE_LIST[@]}"; do
-    node_name=`echo $node | awk '{print $1}'`
-    node_intf=`echo $node | awk '{print $2}'`
-  
-    print_msg "${node_name}: start_monitor $node_intf" 
-    ./01_start_monitor.sh ${node_name} ${node_intf}
-  done
-  cd - &> /dev/null
-}
+for node in "${NODE_LIST[@]}"; do
+  node_name=`echo $node | awk '{print $1}'`
 
-mon-utm() {
-  cd 02-mon-utm
-  print_msg "${UTM}: start_monitor..." 
-  ./01_start_monitor_vUTM.sh $UTM
-  cd - &> /dev/null
-}
+  print_msg "${node_name}: copy dumps" 
+  ./10_copy_dumps.sh ${node_name} $REC_DIR
+done
 
-mon-host
-mon-utm
+if [ ! -z $UTM ]; then
+  print_msg "${node_name}: copy dumps" 
+  ./10_copy_dumps.sh ${UTM} $REC_DIR
+fi
 
+cp $CONFIG ${REC_DIR}

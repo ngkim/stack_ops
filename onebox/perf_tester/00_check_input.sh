@@ -19,3 +19,8 @@ run_local_cmd() {
   cmd="cd $LOC; ./$SCRIPT $START $END; cd -"
   run_commands_no_ret $cmd
 }
+
+NOW=`date '+%Y%m%d_%H%M%S'`
+LOG_DIR="/tmp/perf/$NOW"
+
+

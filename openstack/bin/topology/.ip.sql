@@ -1,1 +1,1 @@
-select network_info from instance_info_caches where instance_uuid = '5a10eaf7-d927-4414-9502-2de362433493';
+select network_info from instance_info_caches where instance_uuid = '3641cd0e-bab2-46f7-ae82-9f94d861a6f9';

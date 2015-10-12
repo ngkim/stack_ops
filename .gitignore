@@ -6,3 +6,5 @@ history
 *.dat
 *.pyc
 log
+.ip.sql
+.sql

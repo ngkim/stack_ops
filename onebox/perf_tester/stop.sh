@@ -19,10 +19,10 @@ CONFIG=$1
 source $CONFIG
 #----------------------------------------------------------------------------------------------
 
-if [ $AB_TEST -eq 1 ]; then
+if [ ! -z $AB_TEST ] && [ $AB_TEST -eq 1 ]; then
   ./13_stop_ab.sh $CONFIG
 fi
-if [ $IPERF_TEST -eq 1 ]; then
+if [ ! -z $IPERF_TEST ] && [ $IPERF_TEST -eq 1 ]; then
   ./12_stop_iperf.sh $CONFIG
 fi
 ./11_stop_monitor.sh $CONFIG

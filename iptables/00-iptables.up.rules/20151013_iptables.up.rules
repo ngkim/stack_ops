@@ -78,5 +78,13 @@ COMMIT
 -A trusted_zones -s 192.168.10.0/24 -j ACCEPT
 #WiMS
 -A trusted_zones -s 218.55.236.140/24 -j ACCEPT
+#insoft
+-A trusted_zones -s 123.212.42.21 -j ACCEPT
+-A trusted_zones -s 123.212.42.40 -j ACCEPT
+-A trusted_zones -s 123.212.42.41 -j ACCEPT
+-A trusted_zones -s 123.212.42.42 -j ACCEPT
+-A trusted_zones -s 123.212.42.43 -j ACCEPT
+-A trusted_zones -s 123.212.42.46 -j ACCEPT
+-A trusted_zones -s 125.138.110.183 -j ACCEPT
 COMMIT
 # Completed on Wed Mar 18 11:00:30 2015

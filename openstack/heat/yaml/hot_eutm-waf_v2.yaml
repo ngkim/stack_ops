@@ -1,0 +1,93 @@
+heat_template_version: 2014-10-16
+description: Endian UTM server.
+parameters:
+    PARM_imageId_eutm:
+        type: string
+        description: Image to be used for Endian UTM
+    PARM_mgmtVnetId_eutm:
+        type: string
+        description: virtual network id of the existing MGMG virtual network
+    PARM_redVnetId_eutm:
+        type: string
+        description: virtual network id of the existing WAN virtual network to be connected to Endian UTM Red Zone
+    PARM_redFixedIp_eutm:
+        type: string
+        description: fixed IP address to be allocated to the Endian UTM Red port
+    PARM_greenVnetId_eutm:
+        type: string
+        description: virtual network id of the existing LAN virtual network to be connected to Endian UTM Green Zone
+    PARM_greenFixedIp_eutm:
+        type: string
+        description: fixed IP address to be allocated to the Endian UTM Green port
+    PARM_orangeVnetId_eutm:
+        type: string
+        description: virtual network id of the existing Customer Server virtual network to be connected to Endian UTM Orange Zone
+    PARM_orangeFixedIp_eutm:
+        type: string
+        description: fixed IP address to be allocated to the Endian UTM  Orange Port
+    PARM_imageId_waf:
+        type: string
+        description: Image to be used for a WAF server
+    PARM_mgmtVnetId_waf:
+        type: string
+        description: virtual network id of the existing MGMG virtual network
+    PARM_svcVnetId_waf:
+        type: string
+        description: virtual network id of the existing Service virtual network
+    PARM_svcFixedIp_waf:
+        type: string
+        description: fixed IP address to be allocated to the WAFs Service Port
+resources:
+    SERV_eutm:
+        type: OS::Nova::Server
+        properties:
+            image: { get_param: PARM_imageId_eutm }
+            flavor: m1.medium
+            networks:
+            -   network: { get_param: PARM_mgmtVnetId_eutm }
+            -   port: { get_resource: PORT_red_eutm }
+            -   port: { get_resource: PORT_green_eutm }
+            -   port: { get_resource: PORT_orange_eutm }
+    PORT_red_eutm:
+        type: OS::Neutron::Port
+        properties:
+            admin_state_up: true
+            network_id: { get_param: PARM_redVnetId_eutm }
+            fixed_ips: 
+            -   ip_address: { get_param: PARM_redFixedIp_eutm }
+    PORT_green_eutm:
+        type: OS::Neutron::Port
+        properties:
+            admin_state_up: true
+            network_id: { get_param: PARM_greenVnetId_eutm }
+            fixed_ips: 
+            -   ip_address: { get_param: PARM_greenFixedIp_eutm }
+    PORT_orange_eutm:
+        type: OS::Neutron::Port
+        properties:
+            admin_state_up: true
+            network_id: { get_param: PARM_orangeVnetId_eutm }
+            fixed_ips:
+            -   ip_address: { get_param: PARM_orangeFixedIp_eutm }    
+    SERV_waf:
+        type: OS::Nova::Server
+        properties:
+            image: { get_param: PARM_imageId_waf }
+            flavor: m1.medium
+            networks:
+            -   network: { get_param: PARM_mgmtVnetId_waf }
+            -   port: { get_resource: PORT_svc_waf }
+    PORT_svc_waf:
+        type: OS::Neutron::Port
+        properties:
+            admin_state_up: true
+            network_id: { get_param: PARM_svcVnetId_waf }
+            fixed_ips:
+            -   ip_address: { get_param: PARM_svcFixedIp_waf }
+outputs:
+    OUTP_mgmtIp_eutm:
+        description: MGMT IP address of the SERV_eutm
+        value: { get_attr: [ SERV_eutm, first_address ] }
+    OUTP_mgmtIp_waf:
+        description: MGMT IP address of the SERV_waf
+        value: { get_attr: [ SERV_waf, first_address ] }

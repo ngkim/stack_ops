@@ -8,7 +8,9 @@ source "$WORK_HOME/include/05_process.sh"
 #--------------------------------------------------------
 # REMOTE Directory to store test results
 #--------------------------------------------------------
-NOW=`date '+%Y%m%d_%H%M%S'`
+NOW_D=`date '+%Y%m%d'`
+NOW_H=`date '+%H'`
+NOW=`date '+%Y%m%d_%H%M_%S'`
 LOG_DIR="/tmp/perf/$NOW"
 LOG_DIR_AB="/tmp/perf/ab/$NOW"
 LOG_DIR_IPERF="/tmp/perf/iperf/$NOW"
@@ -18,7 +20,7 @@ LOG_DIR_IPERF="/tmp/perf/iperf/$NOW"
 # Set it if it doesn't exist
 #--------------------------------------------------------
 if [ -z $REC_DIR ]; then
-  REC_DIR="/tmp/records/exp-${NOW}"
+  REC_DIR="/tmp/records/${NOW_D}/${NOW_H}/exp-${NOW}"
 fi
 
 

@@ -14,6 +14,16 @@ if [ $? -eq 127 ]; then
   apt-get -y install jq
 fi
 
+get_vm_process_list() {
+  local vm=$1
+
+  PS_LIST=""
+  VM_PS_LIST=`ps ax | grep $vm | awk '{print $1}'`
+
+  # replace \n to whitespace and remove trailing whitespaces
+  VM_PS_LIST=`echo $VM_PS_LIST | sed ':a;N;$!ba;s/\n/ /g' | sed -e 's/[[:space:]]*$//'`
+}
+
 get_mac() {
 	vm=$1
 	ITF=$2
@@ -137,7 +147,9 @@ for vm in $VM_LIST; do
 	#echo "vm=" $vm "vm_num=" $vm_num	
 	vm_id_num=`get_vm_num_to_digit $(get_vm_num $vm)`
 	get_vm_name $vm_id_num
-	printf "${red}$vm_name${normal} ($vm)\n"
+        get_vm_process_list $vm
+	printf "$vm ${red}$vm_name${normal}\n"
+	printf "\tPROCID= $VM_PS_LIST \n"
 	
 	IF_LIST=`virsh domiflist $vm | awk '$1 ~ /^tap/ {print $1}'`
 	for iftap in $IF_LIST; do

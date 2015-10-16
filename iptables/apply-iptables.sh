@@ -11,8 +11,10 @@ BAK_DIR="00-iptables.up.rules/${HOSTNAME}"
 BAK_DATE=`date +%y%m%d-%H%M`
 
 mkdir -p $BAK_DIR
-cmd="cp /etc/iptables.up.rules $BAK_DIR/iptables.up.rules-${BAK_DATE}"
-run_command $cmd
+if [ -f /etc/iptables.up.rules ]; then
+  cmd="cp /etc/iptables.up.rules $BAK_DIR/iptables.up.rules-${BAK_DATE}"
+  run_command $cmd
+fi
 
 cmd="cp iptables.up.rules /etc"
 run_command $cmd

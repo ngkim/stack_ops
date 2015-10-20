@@ -1,6 +1,6 @@
 #!/bin/bash
 
-tailf /var/log/kern.log | grep DENY | awk '
+tailf /var/log/messages | grep DENY | awk '
 {
   if (NF == 22)
     printf("%-10s %-20s %-20s %-10s %-10s\n", $16, $9,$10,$17,$18)

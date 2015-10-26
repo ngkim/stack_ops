@@ -88,6 +88,8 @@ COMMIT
 -A trusted_zones -s 123.212.42.43 -j ACCEPT
 -A trusted_zones -s 123.212.42.46 -j ACCEPT
 -A trusted_zones -s 125.138.110.183 -j ACCEPT
--A trusted_zones -s 211.45.60.1 -j ACCEPT
+# External
+-A trusted_zones -s 222.114.24.0/24 -j ACCEPT
+-A trusted_zones -s 175.223.11.0/24 -j ACCEPT
 COMMIT
 # Completed on Wed Mar 18 11:00:30 2015

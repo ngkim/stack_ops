@@ -62,7 +62,7 @@ COMMIT
 -A allowed_sites -j trusted_zones
 -A allowed_sites -p udp --dport 53:54 -j ACCEPT
 -A allowed_sites -p udp --dport 67:68 -j ACCEPT
--A allowed_sites -p udp --dport 137:138 -j ACCEPT
+-A allowed_sites -p udp --dport 137 -j ACCEPT
 -A allowed_sites -m conntrack --ctstate RELATED,ESTABLISHED -j log_allow
 -A allowed_sites -p icmp -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
 # KT R&D Sites

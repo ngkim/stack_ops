@@ -78,9 +78,6 @@ COMMIT
 -A trusted_zones -s 192.168.10.0/24 -j ACCEPT
 # Vagrant
 -A trusted_zones -s 10.0.2.0/24 -j ACCEPT
--A trusted_zones -s 39.7.47.14 -j ACCEPT
--A trusted_zones -s 173.8.162.29 -j ACCEPT
--A trusted_zones -s 70.35.39.246 -j ACCEPT
 #WiMS
 -A trusted_zones -s 218.55.236.140/24 -j ACCEPT
 #insoft
@@ -92,7 +89,7 @@ COMMIT
 -A trusted_zones -s 123.212.42.46 -j ACCEPT
 -A trusted_zones -s 125.138.110.183 -j ACCEPT
 # External
--A trusted_zones -s 222.114.24.0/24 -j ACCEPT
-#-A trusted_zones -s 39.7.52.0/24 -j ACCEPT
+-A trusted_zones -m mac --mac-source "C8:F7:33:49:59:30" -j ACCEPT
+#-A trusted_zones -s 175.223.27.0/24 -j log_allow
 COMMIT
 # Completed on Wed Mar 18 11:00:30 2015

@@ -62,7 +62,6 @@ COMMIT
 -A allowed_sites -j trusted_zones
 -A allowed_sites -p udp --dport 53:54 -j ACCEPT
 -A allowed_sites -p udp --dport 67:68 -j ACCEPT
--A allowed_sites -p udp --dport 137:138 -j ACCEPT
 -A allowed_sites -m conntrack --ctstate RELATED,ESTABLISHED -j log_allow
 -A allowed_sites -p icmp -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
 # KT R&D Sites
@@ -72,6 +71,7 @@ COMMIT
 -A ktrnd_sites -s 221.151.188.0/24 -j ACCEPT
 # DJ 4th floor
 -A ktrnd_sites -s 222.118.131.0/24 -j ACCEPT
+-A ktrnd_sites -s 220.123.31.96/32 -j ACCEPT
 # Trusted Zones
 -A trusted_zones -s 192.168.0.0/24 -j ACCEPT
 -A trusted_zones -s 192.168.1.0/24 -j ACCEPT
@@ -89,6 +89,5 @@ COMMIT
 -A trusted_zones -s 123.212.42.43 -j ACCEPT
 -A trusted_zones -s 123.212.42.46 -j ACCEPT
 -A trusted_zones -s 125.138.110.183 -j ACCEPT
--A trusted_zones -s 211.45.60.1 -j ACCEPT
 COMMIT
 # Completed on Wed Mar 18 11:00:30 2015

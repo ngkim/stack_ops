@@ -17,7 +17,7 @@ if [ ! -f $CFG_DIR/$CONFIG ]; then
   echo "Error: $CFG_DIR/$CONFIG does not exist!!!"
   exit
 else
-  source "$CFG_DIR/CONFIG"
+  source "$CFG_DIR/$CONFIG"
 fi
 
 get_max() {
@@ -152,10 +152,12 @@ show_counter() {
 
                 TX_PKT=$(( $CUR_TX_PKT - $PREV_TX_PKT ))
                 RX_PKT=$(( $CUR_RX_PKT - $PREV_RX_PKT ))
-                TX_DROP=$CUR_TX_DROP
-                RX_DROP=$CUR_RX_DROP
-                TX_BYTES=`echo "scale=2; ($CUR_TX_BYTES - $PREV_TX_BYTES) * 8 / (1000 * 1000 * 1000)" | bc`
-                RX_BYTES=`echo "scale=2; ($CUR_RX_BYTES - $PREV_RX_BYTES) * 8 / (1000 * 1000 * 1000)" | bc`
+                TX_DROP=$(( $CUR_TX_DROP - $PREV_TX_DROP ))
+                RX_DROP=$(( $CUR_RX_DROP - $PREV_RX_DROP ))
+                #TX_DROP=$CUR_TX_DROP
+                #RX_DROP=$CUR_RX_DROP
+                TX_BYTES=`echo "scale=2; ($CUR_TX_BYTES - $PREV_TX_BYTES) * 8 / (1000 * 1000)" | bc`
+                RX_BYTES=`echo "scale=2; ($CUR_RX_BYTES - $PREV_RX_BYTES) * 8 / (1000 * 1000)" | bc`
                 SUM_PKTS=$(( $TX_PKT + $RX_PKT ))
                 SUM_BPS=`echo "scale=2; $TX_BYTES + $RX_BYTES" | bc`
 
@@ -216,7 +218,7 @@ print_line() {
 }
 
 main_loop() {
-
+  echo "size= ${#ITF[@]}"
   print_line
   while true; do
     for (( i = 0 ; i < ${#ITF[@]} ; i++ )) do
@@ -224,7 +226,7 @@ main_loop() {
 	get_counter $i $DEV
     done
 
-    printf "%5s %-15s\t%5s %10s %10s %10s %5s %10s %10s %10s %12s %12s %12s %12s\n" "SEQ" "NIC" ${blue}TX${normal} "TX:pkt/s" "TX:Kbps" "TX_DROP" ${green}RX${normal} "RX:pkt/s" "RX:Kbps" "RX_DROP" "T_PPS" "T_BPS" "MAX_PPS" "MAX_BPS"
+    printf "%5s %-15s\t%5s %10s %10s %10s %5s %10s %10s %10s %12s %12s %12s %12s\n" "SEQ" "NIC" ${blue}TX${normal} "TX:pkt/s" "TX:Mbps" "TX_DROP" ${green}RX${normal} "RX:pkt/s" "RX:Mbps" "RX_DROP" "T_PPS" "T_BPS" "MAX_PPS" "MAX_BPS"
     for (( i = 0 ; i < ${#ITF[@]} ; i++ )) do
         DEV=${ITF[$i]}
 	show_counter $i $DEV
@@ -238,8 +240,8 @@ main_loop() {
     print_line
 
     sleep 1
-#    echo ""
-#    clear
+    echo ""
+    clear
   done
 }
 
